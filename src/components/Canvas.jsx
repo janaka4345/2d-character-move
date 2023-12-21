@@ -4,8 +4,9 @@ import { ReactP5Wrapper } from "@p5-wrapper/react";
 
 let isPressed;
 let engine;
-let cw;
-let ch;
+let cw = 400;
+let ch = 400;
+let player;
 export default function Canvas(props) {
   isPressed = useRef(false);
   engine = useRef(Engine.create());
@@ -13,8 +14,8 @@ export default function Canvas(props) {
   const [state, setState] = useState(0);
 
   useEffect(() => {
-    cw = 400;
-    ch = 400;
+    // cw = 400;
+    // ch = 400;
 
     Composite.add(engine.current.world, [
       Bodies.rectangle(cw / 2, -10, cw, 20, {
@@ -72,7 +73,12 @@ export default function Canvas(props) {
     Composite.add(engine.current.world, [ball]);
     // }
   };
-
+  player = useRef({
+    positionX: cw / 2,
+    positionY: ch / 2,
+    speedX: 1,
+    speedY: 1,
+  });
   return (
     <div
     // onMouseDown={handleDown}
@@ -106,11 +112,12 @@ function setup(p5) {
 }
 function draw(p5) {
   return () => {
+    // console.log(player.current);
     p5.background(250, 120, 0);
     p5.push();
     p5.rectMode(p5.CENTER);
     p5.fill(255, 204, 0);
-    p5.rect(cw / 2, ch / 2, 100, 100);
+    p5.rect(player.current.positionX, player.current.positionY, 100, 100);
     p5.pop();
     engine.current.world.bodies.forEach((body) => {
       if (body.label === "box") {
@@ -170,5 +177,17 @@ function mousePressed(p5) {
   Composite.add(engine.current.world, [ball]);
 }
 function keyPressed(p5) {
-  console.log(p5);
+  console.log(p5.deltaTime);
+  p5.key === "d"
+    ? (player.current.positionX += player.current.speedX * p5.deltaTime)
+    : null;
+  p5.key === "a"
+    ? (player.current.positionX -= player.current.speedX * p5.deltaTime)
+    : null;
+  p5.key === "w"
+    ? (player.current.positionY -= player.current.speedY * p5.deltaTime)
+    : null;
+  p5.key === "s"
+    ? (player.current.positionY += player.current.speedY * p5.deltaTime)
+    : null;
 }
