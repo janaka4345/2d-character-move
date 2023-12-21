@@ -4,6 +4,8 @@ import { ReactP5Wrapper } from "@p5-wrapper/react";
 
 let isPressed;
 let engine;
+let cw;
+let ch;
 export default function Canvas(props) {
   isPressed = useRef(false);
   engine = useRef(Engine.create());
@@ -11,8 +13,8 @@ export default function Canvas(props) {
   const [state, setState] = useState(0);
 
   useEffect(() => {
-    const cw = 400;
-    const ch = 400;
+    cw = 400;
+    ch = 400;
 
     Composite.add(engine.current.world, [
       Bodies.rectangle(cw / 2, -10, cw, 20, {
@@ -95,6 +97,7 @@ function sketch(p5) {
   p5.setup = setup(p5);
   p5.draw = draw(p5);
   p5.mousePressed = () => mousePressed(p5);
+  p5.keyPressed = () => keyPressed(p5);
 }
 function setup(p5) {
   return () => {
@@ -104,6 +107,11 @@ function setup(p5) {
 function draw(p5) {
   return () => {
     p5.background(250, 120, 0);
+    p5.push();
+    p5.rectMode(p5.CENTER);
+    p5.fill(255, 204, 0);
+    p5.rect(cw / 2, ch / 2, 100, 100);
+    p5.pop();
     engine.current.world.bodies.forEach((body) => {
       if (body.label === "box") {
         p5.push();
@@ -139,6 +147,14 @@ function draw(p5) {
   };
 }
 function mousePressed(p5) {
+  if (
+    p5.mouseX > p5.canvas.width ||
+    p5.mouseY > p5.canvas.height ||
+    p5.mouseX < 0 ||
+    p5.mouseY < 0
+  ) {
+    return null;
+  }
   const ball = Bodies.rectangle(
     p5.mouseX,
     p5.mouseY,
@@ -152,4 +168,7 @@ function mousePressed(p5) {
     },
   );
   Composite.add(engine.current.world, [ball]);
+}
+function keyPressed(p5) {
+  console.log(p5);
 }
