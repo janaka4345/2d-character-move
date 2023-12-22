@@ -78,6 +78,7 @@ function sketch(p5) {
   p5.draw = draw(p5);
   p5.mouseDragged = (e) => mouseDragged(e, p5);
   p5.mousePressed = (e) => mousePressed(e, p5);
+  p5.mouseReleased = () => mouseReleased();
 }
 function setup(p5) {
   return () => {
@@ -141,6 +142,9 @@ function draw(p5) {
 function mousePressed(e, p5) {
   console.log("pressed", e);
   // console.log(e);
+}
+function mouseReleased() {
+  isPressed.current = [{}];
 }
 function keyPressed(p5) {
   console.log(p5);
