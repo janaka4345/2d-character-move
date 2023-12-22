@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Engine, Bodies, Runner, Composite, Composites } from "matter-js";
+import { Engine, Bodies, Runner, Composite, Composites, Body } from "matter-js";
 import { ReactP5Wrapper } from "@p5-wrapper/react";
 
 let isPressed;
@@ -122,7 +122,9 @@ function draw(p5) {
       if (body.label === "player") {
         p5.push();
         p5.rectMode(p5.CENTER);
-        playerControlKey.current === "d" ? (body.force.x = 0.01) : null;
+        playerControlKey.current === "d"
+          ? Body.setVelocity(body, { x: 1, y: 0 })
+          : null;
         p5.fill(255, 204, 0);
         p5.quad(
           body.vertices[0].x,
@@ -168,9 +170,37 @@ function draw(p5) {
       }
     });
     p5.keyIsPressed ? keyPressed(p5) : (playerControlKey.current = undefined);
+    if (engine.current.detector.pairs.collisionActive) {
+      engine.current.detector.pairs.collisionActive.forEach((colliders) => {
+        if (
+          colliders.bodyA.label === "player" &&
+          colliders.bodyB.label === "box"
+          //  ||
+          // (colliders.bodyA.label === "box" &&
+          //   colliders.bodyB.label === "player")
+        ) {
+          Composite.remove(engine.current.world, [colliders.bodyB]);
+        }
+      });
+    }
   };
 }
 function mousePressed(p5) {
+  console.log(engine.current.detector.pairs);
+  console.log(engine.current.world);
+  if (engine.current.detector.pairs.collisionActive) {
+    engine.current.detector.pairs.collisionActive.forEach((colliders) => {
+      if (
+        colliders.bodyA.label === "player" &&
+        colliders.bodyB.label === "box"
+        //  ||
+        // (colliders.bodyA.label === "box" &&
+        //   colliders.bodyB.label === "player")
+      ) {
+        Composite.remove(engine.current.world, [colliders.bodyB]);
+      }
+    });
+  }
   if (
     p5.mouseX > p5.canvas.width ||
     p5.mouseY > p5.canvas.height ||
