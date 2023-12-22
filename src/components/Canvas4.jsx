@@ -117,8 +117,9 @@ function sketch(p5) {
   // p5.preload = preload(p5);
   p5.setup = setup(p5);
   p5.draw = draw(p5);
-  p5.mousePressed = () => mousePressed(p5);
-  // p5.keyPressed = () => keyPressed(p5);
+  p5.mousePressed = (e) => mousePressed(e, p5);
+  // p5.keyPressed = (e) => keyPressed(e, p5);
+  // p5.mouseDragged = (e) => mouseDragged(e);
 }
 function setup(p5) {
   return () => {
@@ -200,9 +201,9 @@ function draw(p5) {
     }
   };
 }
-function mousePressed(p5) {
-  // console.log(engine.current.detector.pairs);
-  // console.log(engine.current.world);
+function mousePressed(e, p5) {
+  console.log(e);
+  console.log(p5);
   canvasMouse = Mouse.create(p5.canvas);
 
   mConstraint = MouseConstraint.create(engine.current, {
@@ -215,8 +216,11 @@ function mousePressed(p5) {
     },
   });
   Composite.add(engine.current.world, mConstraint);
-  console.log(canvasMouse);
-  console.log(engine.current);
+  // console.log(canvasMouse);
+  // console.log(engine.current);
+
+  /////////////////////
+
   // if (engine.current.detector.pairs.collisionActive) {
   //   engine.current.detector.pairs.collisionActive.forEach((colliders) => {
   //     if (
@@ -253,7 +257,7 @@ function mousePressed(p5) {
   //   Composite.add(engine.current.world, [ball]);
 }
 function keyPressed(p5) {
-  //   console.log(engine.current.world);
+  console.log(p5);
   playerControlKey.current != p5.key
     ? (playerControlKey.current = p5.key)
     : null;
@@ -267,4 +271,7 @@ function keyPressed(p5) {
   //   p5.key === "s"
   //     ? (player.current.positionY += player.current.speedY * p5.deltaTime)
   //     : null;
+}
+function mouseDragged(event) {
+  console.log(event);
 }
