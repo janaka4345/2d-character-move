@@ -50,6 +50,7 @@ export default function ShooterRobot(props) {
     ]);
     player = Bodies.circle(cw / 2, ch / 2, 50, {
       label: "player",
+      isStatic: true,
       // gravity: { x: 0, y: 0 },
     });
 
@@ -169,14 +170,42 @@ function draw(p5) {
   };
 }
 function mousePressed(e, p5) {
-  const bullet = Bodies.circle(100, 100, 10, {
-    label: "bullet",
-    gravity: { x: 0, y: 0 },
-    // setPosition: { x: 100, y: 100 },
-  });
+  const bullet = Bodies.circle(
+    player.position.x +
+      50 *
+        Math.cos(
+          Math.atan2(
+            p5.mouseY - player.position.y,
+            p5.mouseX - player.position.x
+          )
+        ),
+    player.position.y +
+      50 *
+        Math.sin(
+          Math.atan2(
+            p5.mouseY - player.position.y,
+            p5.mouseX - player.position.x
+          )
+        ),
+    10,
+    {
+      label: "bullet",
+      gravity: { x: 0, y: 0 },
+      // velocity: { x: 30, y: 30 },
+      // setPosition: { x: 100, y: 100 },
+    }
+  );
   Body.setVelocity(bullet, {
-    x: 30,
-    y: 30,
+    x:
+      5 *
+      Math.cos(
+        Math.atan2(p5.mouseY - player.position.y, p5.mouseX - player.position.x)
+      ),
+    y:
+      5 *
+      Math.sin(
+        Math.atan2(p5.mouseY - player.position.y, p5.mouseX - player.position.x)
+      ),
   });
   console.log(bullet);
   Composite.add(engine.current.world, [bullet]);
