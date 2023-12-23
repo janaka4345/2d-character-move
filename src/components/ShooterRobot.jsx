@@ -17,12 +17,13 @@ let cw = 400;
 let ch = 400;
 let canvas;
 let canvasMouse;
+let player;
 export default function ShooterRobot(props) {
   isPressed = useRef([{}]);
   engine = useRef(
     Engine.create({
       gravity: { x: 0, y: 0 },
-    }),
+    })
   );
 
   // playerControlKey = useRef();
@@ -47,7 +48,7 @@ export default function ShooterRobot(props) {
         label: "wall",
       }),
     ]);
-    const player = Bodies.circle(cw / 2, ch / 2, 50, {
+    player = Bodies.circle(cw / 2, ch / 2, 50, {
       label: "player",
       // gravity: { x: 0, y: 0 },
     });
@@ -101,9 +102,45 @@ function draw(p5) {
         p5.fill(255, 204, 0);
         p5.circle(body.position.x, body.position.y, 100);
         p5.fill(255, 255, 255);
-        p5.circle(body.position.x, body.position.y, 60);
+        p5.circle(
+          body.position.x +
+            Math.cos(
+              Math.atan2(
+                p5.mouseY - player.position.y,
+                p5.mouseX - player.position.x
+              )
+            ) *
+              10,
+          body.position.y +
+            Math.sin(
+              Math.atan2(
+                p5.mouseY - player.position.y,
+                p5.mouseX - player.position.x
+              )
+            ) *
+              10,
+          60
+        );
         p5.fill(0, 0, 0);
-        p5.circle(body.position.x, body.position.y, 30);
+        p5.circle(
+          body.position.x +
+            Math.cos(
+              Math.atan2(
+                p5.mouseY - player.position.y,
+                p5.mouseX - player.position.x
+              )
+            ) *
+              20,
+          body.position.y +
+            Math.sin(
+              Math.atan2(
+                p5.mouseY - player.position.y,
+                p5.mouseX - player.position.x
+              )
+            ) *
+              20,
+          30
+        );
         p5.pop();
       }
 
@@ -118,7 +155,7 @@ function draw(p5) {
           body.vertices[2].x,
           body.vertices[2].y,
           body.vertices[3].x,
-          body.vertices[3].y,
+          body.vertices[3].y
         );
         p5.pop();
       }
@@ -126,14 +163,21 @@ function draw(p5) {
   };
 }
 function mousePressed(e, p5) {
-  // console.log(engine.current);
+  console.log(player);
 
   console.log(canvasMouse);
   // console.log(e);
 }
 function mouseMoved(e, p5) {
+  // console.log(
+  //   Math.atan2(-p5.mouseY + player.position.y, p5.mouseX - player.position.x)
+  // );
+  // player.position.x = p5.mouseX;
+  // player.position.y = p5.mouseY;
   // e.srcElemement = "defaultCanvas0.p5Canvas";
   // console.log(e.clientX, e.clientY);
-  // console.log(p5.mouseX, p5.mouseY);
+  // console.log(
+  //   Math.atan2(-p5.mouseY + player.position.y, p5.mouseX - player.position.x)
+  // );
   // console.log(e);
 }
