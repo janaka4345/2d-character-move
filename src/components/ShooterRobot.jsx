@@ -15,12 +15,14 @@ let isPressed;
 let engine;
 let cw = 400;
 let ch = 400;
+let canvas;
+let canvasMouse;
 export default function ShooterRobot(props) {
   isPressed = useRef([{}]);
   engine = useRef(
     Engine.create({
       gravity: { x: 0, y: 0 },
-    })
+    }),
   );
 
   // playerControlKey = useRef();
@@ -80,11 +82,12 @@ function sketch(p5) {
   // p5.mouseDragged = (e) => mouseDragged(e, p5);
   p5.mousePressed = (e) => mousePressed(e, p5);
   // p5.mouseReleased = () => mouseReleased();
-  p5.mouseMoved = (e) => mouseMoved(e);
+  p5.mouseMoved = (e) => mouseMoved(e, p5);
 }
 function setup(p5) {
   return () => {
-    p5.createCanvas(400, 400);
+    canvas = p5.createCanvas(400, 400);
+    canvasMouse = Mouse.create(canvas.elt);
   };
 }
 function draw(p5) {
@@ -115,7 +118,7 @@ function draw(p5) {
           body.vertices[2].x,
           body.vertices[2].y,
           body.vertices[3].x,
-          body.vertices[3].y
+          body.vertices[3].y,
         );
         p5.pop();
       }
@@ -123,11 +126,14 @@ function draw(p5) {
   };
 }
 function mousePressed(e, p5) {
-  console.log(engine.current);
+  // console.log(engine.current);
+
+  console.log(canvasMouse);
   // console.log(e);
 }
-function mouseMoved(e) {
-  e.srcElemement = "defaultCanvas0.p5Canvas";
-  console.log(e.clientX, e.clientY);
+function mouseMoved(e, p5) {
+  // e.srcElemement = "defaultCanvas0.p5Canvas";
+  // console.log(e.clientX, e.clientY);
+  // console.log(p5.mouseX, p5.mouseY);
   // console.log(e);
 }

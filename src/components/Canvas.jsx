@@ -68,7 +68,7 @@ export default function Canvas(props) {
         // friction: 0.005,
 
         label: "box",
-      }
+      },
     );
     Composite.add(engine.current.world, [ball]);
     // }
@@ -76,8 +76,8 @@ export default function Canvas(props) {
   player = useRef({
     positionX: cw / 2,
     positionY: ch / 2,
-    speedX: 0.1,
-    speedY: 0.1,
+    speedX: 1,
+    speedY: 1,
   });
   return (
     <div
@@ -103,7 +103,7 @@ function sketch(p5) {
   p5.setup = setup(p5);
   p5.draw = draw(p5);
   p5.mousePressed = () => mousePressed(p5);
-  // p5.keyPressed = () => keyPressed(p5);
+  p5.keyPressed = () => keyPressed(p5);
 }
 function setup(p5) {
   return () => {
@@ -112,7 +112,7 @@ function setup(p5) {
 }
 function draw(p5) {
   return () => {
-    // console.log(p5.keyIsPressed);
+    // console.log(player.current);
     p5.background(250, 120, 0);
     p5.push();
     p5.rectMode(p5.CENTER);
@@ -131,7 +131,7 @@ function draw(p5) {
           body.vertices[2].x,
           body.vertices[2].y,
           body.vertices[3].x,
-          body.vertices[3].y
+          body.vertices[3].y,
         );
         p5.pop();
       }
@@ -146,12 +146,11 @@ function draw(p5) {
           body.vertices[2].x,
           body.vertices[2].y,
           body.vertices[3].x,
-          body.vertices[3].y
+          body.vertices[3].y,
         );
         p5.pop();
       }
     });
-    p5.keyIsPressed ? keyPressed(p5) : null;
   };
 }
 function mousePressed(p5) {
@@ -173,12 +172,11 @@ function mousePressed(p5) {
       // restitution: 0.9,
       // friction: 0.005,
       label: "box",
-    }
+    },
   );
   Composite.add(engine.current.world, [ball]);
 }
 function keyPressed(p5) {
-  console.log(p5.deltaTime);
   p5.key === "d"
     ? (player.current.positionX += player.current.speedX * p5.deltaTime)
     : null;
