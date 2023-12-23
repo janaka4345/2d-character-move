@@ -159,13 +159,29 @@ function draw(p5) {
         );
         p5.pop();
       }
+      if (body.label === "bullet") {
+        p5.push();
+        p5.fill(0, 0, 0);
+        p5.circle(body.position.x, body.position.y, 20);
+        p5.pop();
+      }
     });
   };
 }
 function mousePressed(e, p5) {
-  console.log(player);
+  const bullet = Bodies.circle(100, 100, 10, {
+    label: "bullet",
+    gravity: { x: 0, y: 0 },
+    // setPosition: { x: 100, y: 100 },
+  });
+  Body.setVelocity(bullet, {
+    x: 30,
+    y: 30,
+  });
+  console.log(bullet);
+  Composite.add(engine.current.world, [bullet]);
 
-  console.log(canvasMouse);
+  // console.log(canvasMouse);
   // console.log(e);
 }
 function mouseMoved(e, p5) {
